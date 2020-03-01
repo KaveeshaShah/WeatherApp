@@ -22,7 +22,7 @@ class Command(BaseCommand):
                 forecast_api_link= 'https://api.weatherbit.io/v2.0/forecast/daily?city={}&key={}'.format(user.location.city,API_KEY)
                 response1 = requests.get(current_api_link)
                 response2 = requests.get(forecast_api_link)
-                #Save the current temperature, forecasted temperature and weather code in the location dictionary
+                #Save the current temperature, forecasted temperature, weather code in the location dictionary
                 locations[user.location]=[response1.json()['data'][0]['temp'],response2.json()['data'][0]['temp'],int(response1.json()['data'][0]['weather']['code']),response1.json()['data'][0]['weather']['description']]
                 
         print(locations)
@@ -53,13 +53,13 @@ class Command(BaseCommand):
               <body>
                 <p>Hi,<br>
                    How are you?<br>
-                   Looks like the temperature today is {} Celsius.<br> Tomorrow its going to be {} Celsius.<br> The weather today has {}.<br>
+                   Looks like the temperature in {} is {} degrees Celsius today.<br> Tomorrow its going to be {} degrees Celsius.<br> The weather today has {}.<br>
                    Looking for something interesting to do in this weather? Come visit the <a href="https://www.klaviyo.com/">Klaviyo website</a> 
                 </p>
                 <img src="https://getvectorlogo.com/wp-content/uploads/2019/07/klaviyo-vector-logo.png">
               </body>
             </html>
-            """.format(curr_temp,forecasted_temp,description)
+            """.format(user.location.city,curr_temp,forecasted_temp,description)
 
             # Turn these into plain/html MIMEText objects
             part2 = MIMEText(html, "html")
